@@ -1,0 +1,18 @@
+version: "3"
+services:
+  postgrest:
+    build: ./postgrest
+    volumes:
+      - ./postgrest/tutorial.conf:/etc/tutorial.conf:ro
+    ports:
+      - "3000:3000"
+    entrypoint: ["/postgrest/postgrest"]
+    command: ["/etc/tutorial.conf"]
+    depends_on:
+      - postgres-service
+  postgres-service:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_PASSWORD: "root"
+    volumes:
+      - ./postgres:/docker-entrypoint-initdb.d:ro
